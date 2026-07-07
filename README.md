@@ -50,18 +50,6 @@ It ships with a secure **ASP.NET Core 8 Web API** backend and a modern
   <tr><td><b>API Docs</b></td><td>Swagger / Swashbuckle</td></tr>
 </table>
 
-## 🖼️ Screenshots
-
-> _Add screenshots of the Home, Shop, Cart, Checkout and Admin pages here._
-
-<div align="center">
-
-| Home | Product & Reviews | Admin Panel |
-|:----:|:-----------------:|:-----------:|
-| _tbd_ | _tbd_ | _tbd_ |
-
-</div>
-
 ## 🗂️ Project Structure
 
 ```
