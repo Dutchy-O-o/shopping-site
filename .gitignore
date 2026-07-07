@@ -1,0 +1,31 @@
+# ---------- .NET / ASP.NET Core ----------
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+.vs/
+
+# ---------- Node / React ----------
+node_modules/
+/frontend/build/
+/React kodum/react-app/build/
+npm-debug.log*
+yarn-error.log*
+
+# ---------- Environment & secrets ----------
+.env
+.env.local
+appsettings.Development.json
+*.Development.json
+secrets.json
+
+# ---------- Personal / non-project files (do NOT publish) ----------
+frontend/public/Images/*.pdf
+frontend/public/Images/*.docx
+frontend/public/Images/*.doc
+
+# ---------- OS / editor ----------
+.DS_Store
+Thumbs.db
+*.swp
+.idea/

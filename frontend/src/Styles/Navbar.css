@@ -1,0 +1,30 @@
+/* General Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: center;  /* Align links in the center */
+    gap: 1rem;                /* Space between links */
+    padding: 1rem 0;
+    background-color: #00796b;  /* Dark teal background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add shadow */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  /* Styling for individual links */
+  .nav-link {
+    text-decoration: none;
+    color: white;             /* White text for contrast */
+    font-size: 18px;          /* Adjust text size */
+    font-weight: bold;        /* Bold links */
+    padding: 10px 15px;       /* Padding for clickable area */
+    border-radius: 4px;       /* Rounded corners */
+    transition: all 0.3s ease; /* Smooth transition on hover */
+  }
+  
+  .nav-link:hover {
+    background-color: #004d40;  /* Darker background on hover */
+    color: #61dafb;             /* Light blue text on hover */
+    text-decoration: underline; /* Underline effect on hover */
+  }
+  

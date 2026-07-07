@@ -1,0 +1,61 @@
+.customers-table-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.customers-table th, .customers-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.customers-table th {
+  background-color: #00796b;
+  color: white;
+}
+
+.customers-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.customers-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.customers-table td {
+  font-size: 14px;
+}
+
+/* Yeni eklenen CSS */
+.review-details {
+  padding: 10px;
+  background-color: #f7f7f7;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px; /* Kenarları yuvarlatmak için */
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+
