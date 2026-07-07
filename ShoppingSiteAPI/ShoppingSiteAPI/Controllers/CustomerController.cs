@@ -13,10 +13,12 @@ using ShoppingSiteAPI.DTOs;
 public class CustomerController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<CustomerController> _logger;
 
-    public CustomerController(AppDbContext context)
+    public CustomerController(AppDbContext context, ILogger<CustomerController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     [Authorize(Roles = "Admin")]
@@ -102,8 +104,8 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error occurred: {ex.Message}");
-            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            _logger.LogError(ex, "Error fetching customer {CustomerId} via function.", id);
+            return StatusCode(500, "An error occurred while fetching the customer.");
         }
     }
 
@@ -173,7 +175,8 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = "An error occurred.", Details = ex.Message });
+            _logger.LogError(ex, "An error occurred while processing a customer request.");
+            return BadRequest(new { Message = "An error occurred while processing your request." });
         }
     }
 
@@ -252,7 +255,8 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = "An error occurred.", Details = ex.Message });
+            _logger.LogError(ex, "An error occurred while processing a customer request.");
+            return BadRequest(new { Message = "An error occurred while processing your request." });
         }
     }
 
@@ -269,7 +273,8 @@ public class CustomerController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { Message = "An error occurred.", Details = ex.Message });
+            _logger.LogError(ex, "An error occurred while processing a customer request.");
+            return BadRequest(new { Message = "An error occurred while processing your request." });
         }
     }
 }

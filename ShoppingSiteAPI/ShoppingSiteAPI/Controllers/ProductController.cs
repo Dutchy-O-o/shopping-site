@@ -11,10 +11,12 @@ using System.Text;
 public class ProductController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<ProductController> _logger;
 
-    public ProductController(AppDbContext context)
+    public ProductController(AppDbContext context, ILogger<ProductController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     [HttpGet("get-products")]
@@ -121,8 +123,8 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error occurred: {ex.Message}");
-            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            _logger.LogError(ex, "Error fetching product {ProductId} via function.", id);
+            return StatusCode(500, "An error occurred while fetching the product.");
         }
     }
 
@@ -140,8 +142,8 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Handle any errors that occur during the call
-            return BadRequest(new { Message = "An error occurred.", Details = ex.Message });
+            _logger.LogError(ex, "Error adding product {ProductId} via procedure.", ProductId);
+            return BadRequest(new { Message = "An error occurred while adding the product." });
         }
     }
 
