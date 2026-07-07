@@ -19,21 +19,12 @@ const App: React.FC = () => {
     // Check login and admin status on component mount
     useEffect(() => {
         const token = localStorage.getItem("authToken");
-        const storedUserId = localStorage.getItem("userId");
+        const role = localStorage.getItem("role");
 
-        const customerId = storedUserId ? parseInt(storedUserId) : undefined;
-
-        if (token) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
-
-        if (customerId === 10) {  // Assuming '10' is the admin ID
-            setAdmin(true);
-        } else {
-            setAdmin(false);
-        }
+        setIsLoggedIn(!!token);
+        // Admin status comes from the role claim returned by the backend,
+        // not from a hard-coded user id.
+        setAdmin(role === "Admin");
     }, []);
 
     return (

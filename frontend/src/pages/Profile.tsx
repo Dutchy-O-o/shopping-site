@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/client";
 import '../Styles/Profile.css';
 import { AxiosError } from 'axios'; // Import AxiosError type
 
@@ -54,7 +54,6 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [reviewsVisible, setReviewsVisible] = useState<boolean>(false);
     const [orders, setOrders] = useState<any[]>([]);
-    const [admin, setAdmin] = useState<boolean>(false);
     const [ordersVisible, setOrdersVisible] = useState<boolean>(false); // New state for orders visibility
 
     
@@ -72,7 +71,7 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
     const fetchCustomerByFunction = async (id: number) => {
         try {
             setIsLoading(true);
-            const response = await axios.get(`https://localhost:7192/api/Customer/get-customer-by-function/${id}`);
+            const response = await api.get(`/api/Customer/get-customer-by-function/${id}`);
             setCustomer(response.data);
             setFirstName(response.data.customerFirstName);
             setLastName(response.data.customerLastName);
@@ -88,7 +87,7 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
 
     const fetchReviews = async (id: number) => {
         try {
-            const response = await axios.get(`https://localhost:7192/api/Review/select-review-from-customer-via-function?CustomerId=${id}`);
+            const response = await api.get(`/api/Review/select-review-from-customer-via-function?CustomerId=${id}`);
             setReviews(response.data);
         } catch (error) {
             console.error("Error fetching reviews:", error);
@@ -99,7 +98,7 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
     const deleteReview = async (reviewId: number, productId: number) => {
         try {
             console.log("Deleting review with ID:", reviewId, "for product with ID:", productId);
-            await axios.post(`https://localhost:7192/api/Review/delete-review-via-procedure-with-customer_id-and-product_id`, null, {
+            await api.post(`/api/Review/delete-review-via-procedure-with-customer_id-and-product_id`, null, {
                 params: {
                     CustomerId: userId,  // Burada `userId` kullanarak ilgili kullanıcının ID'sini gönderiyoruz
                     ProductId: productId
@@ -116,7 +115,7 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
    
     const fetchOrders = async (id: number) => {
         try {
-            const response = await axios.get(`https://localhost:7192/api/Order/select-orders-join-ordered_items-join-products-with-customer_id-via-function?CustomerId=${id}`);
+            const response = await api.get(`/api/Order/select-orders-join-ordered_items-join-products-with-customer_id-via-function?CustomerId=${id}`);
             setOrders(response.data);
         } catch (error) {
             console.error("Error fetching orders:", error);
@@ -160,22 +159,10 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
 
     
     const handleLogout = () => {
-        const storedUserId = localStorage.getItem("userId");
-        const customerId = storedUserId ? parseInt(storedUserId) : undefined;
-
-        // Check if the user is an admin (assuming admin ID is 10)
-        if (customerId === 10) {
-            setAdmin(true);
-            console.log(admin);
-        }
-        else{
-            setAdmin(false);
-            console.log(admin);
-        }
-
         localStorage.removeItem("authToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
         setIsLoggedIn(false);
-        console.log("Logged out successfully.");
     };
 
     const handleEditProfile = () => {
@@ -184,8 +171,8 @@ export function Profile({ setIsLoggedIn }: ProfileProps) {
 
     const handleSaveProfile = async () => {
         try {
-            const response = await axios.post(
-                `https://localhost:7192/api/Customer/procedure-edit-profile?CustomerId=${userId}&CustomerFirstName=${firstName}&CustomerLastName=${lastName}&CustomerEmail=${email}&PasswordHash=${password}`,
+            const response = await api.post(
+                `/api/Customer/procedure-edit-profile?CustomerId=${userId}&CustomerFirstName=${firstName}&CustomerLastName=${lastName}&CustomerEmail=${email}&PasswordHash=${password}`,
                 {}
             );
     

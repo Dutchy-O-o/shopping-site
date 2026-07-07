@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { urlCustomers } from "../endpoints";
 import '../Styles/App.css';
-import axios from 'axios';
+import api from '../api/client';
 
 export function Customers() {
   interface Customer {
@@ -35,15 +34,14 @@ export function Customers() {
   const [isLoading, setIsLoading] = useState(false); // For loading state
 
   useEffect(() => {
-    fetch(urlCustomers)
-      .then((response) => response.json())
-      .then(async (data) => {
+    api.get('/api/Customer/get-customers')
+      .then(async (response) => {
+        const data: Customer[] = response.data;
         try {
           const fetchMuteStatuses = await Promise.all(
             data.map(async (customer: Customer) => {
-              const res = await fetch(`https://localhost:7192/api/MutedCustomer/select_muted_customers_with_customer_id-via-function?CustomerId=${customer.customerId}`);
-              const muteData = await res.json();
-              return { ...customer, isMuted: muteData.length > 0 };
+              const res = await api.get(`/api/MutedCustomer/select_muted_customers_with_customer_id-via-function?CustomerId=${customer.customerId}`);
+              return { ...customer, isMuted: res.data.length > 0 };
             })
           );
           setCustomers(fetchMuteStatuses);
@@ -54,65 +52,48 @@ export function Customers() {
       .catch((error) => console.error('Error fetching customers:', error));
   }, []);
 
-  const handleDelete = (customerId: number) => {
-    fetch(`https://localhost:7192/api/Customer/remove-customer-by-id?Id=${customerId}`, {
-      method: 'DELETE',
-    })
-      .then((response) => {
-        if (response.ok) {
-          setCustomers(customers.filter((customer) => customer.customerId !== customerId));
-        } else {
-          console.error('Error deleting customer');
-        }
-      })
-      .catch((error) => console.error('Error deleting customer:', error));
+  const handleDelete = async (customerId: number) => {
+    try {
+      await api.delete(`/api/Customer/remove-customer-by-id?Id=${customerId}`);
+      setCustomers(customers.filter((customer) => customer.customerId !== customerId));
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+    }
   };
 
-  const handleMute = (customerId: number) => {
+  const handleMute = async (customerId: number) => {
     const whyMutedDescription = prompt("Enter reason for muting this customer:");
     if (!whyMutedDescription) {
       alert("Muting reason is required.");
       return;
     }
 
-    fetch(`https://localhost:7192/api/MutedCustomer/procedure-add-muted-customer?CustomerId=${customerId}&WhyMutedDescription=${encodeURIComponent(whyMutedDescription)}`, {
-      method: 'POST',
-    })
-      .then((response) => {
-        if (response.ok) {
-          setCustomers(customers.map((customer) =>
-            customer.customerId === customerId ? { ...customer, isMuted: true } : customer
-          ));
-          alert('Customer muted successfully');
-        } else {
-          console.error('Error muting customer');
-        }
-      })
-      .catch((error) => console.error('Error muting customer:', error));
+    try {
+      await api.post(`/api/MutedCustomer/procedure-add-muted-customer?CustomerId=${customerId}&WhyMutedDescription=${encodeURIComponent(whyMutedDescription)}`);
+      setCustomers(customers.map((customer) =>
+        customer.customerId === customerId ? { ...customer, isMuted: true } : customer
+      ));
+      alert('Customer muted successfully');
+    } catch (error) {
+      console.error('Error muting customer:', error);
+    }
   };
 
   const handleUnmute = async (customerId: number) => {
     try {
-        const response = await fetch(`https://localhost:7192/api/MutedCustomer/procedure-remove-muted-customer?CustomerId=${customerId}`, {
-            method: 'POST'  
-        });
-        if (response.ok) {
-            setCustomers(customers.map((customer) =>
-                customer.customerId === customerId ? { ...customer, isMuted: false } : customer
-            ));
-            alert('Customer successfully unmuted.');
-        } else {
-            console.error('Error unmuting customer');
-        }
+      await api.post(`/api/MutedCustomer/procedure-remove-muted-customer?CustomerId=${customerId}`);
+      setCustomers(customers.map((customer) =>
+        customer.customerId === customerId ? { ...customer, isMuted: false } : customer
+      ));
+      alert('Customer successfully unmuted.');
     } catch (error) {
-        console.error('Error unmuting customer:', error);
+      console.error('Error unmuting customer:', error);
     }
   };
 
   const fetchReviews = async (id: number) => {
     try {
-      const response = await axios.get(`https://localhost:7192/api/Review/select-review-from-customer-via-function?CustomerId=${id}`);
-      console.log("Fetched Reviews:", response.data); // API'den gelen yanıtı kontrol edin
+      const response = await api.get(`/api/Review/select-review-from-customer-via-function?CustomerId=${id}`);
       setReviews(response.data);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -122,14 +103,13 @@ export function Customers() {
 
   const deleteReview = async (reviewId: number, productId: number) => {
     try {
-      console.log("Deleting review with ID:", reviewId, "for product with ID:", productId);
-      await axios.post(`https://localhost:7192/api/Review/delete-review-via-procedure-with-customer_id-and-product_id`, null, {
+      await api.post(`/api/Review/delete-review-via-procedure-with-customer_id-and-product_id`, null, {
         params: {
-          CustomerId: selectedCustomer,  // Sending the selectedCustomer ID
+          CustomerId: selectedCustomer,
           ProductId: productId
         }
       });
-      setReviews(reviews.filter(review => review.reviewId !== reviewId)); // Update the reviews list
+      setReviews(reviews.filter(review => review.reviewId !== reviewId));
     } catch (error) {
       console.error("Error deleting review:", error);
       setError("Error deleting review. Please try again.");

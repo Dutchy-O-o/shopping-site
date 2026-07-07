@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/client';
 import '../Styles/Login.css';
-import jwt_decode from 'jwt-decode';
 
 
     export function SignUpOrLogin({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) {
@@ -27,57 +26,46 @@ import jwt_decode from 'jwt-decode';
         }, [setIsLoggedIn, isLoggedIn]);
 
         const handleSignUp = async () => {
-            const url = `https://localhost:7192/api/Customer/procedure-sign-up?CustomerFirstName=${customerFirstName}&CustomerLastName=${customerLastName}&CustomerEmail=${customerEmail}&PasswordHash=${passwordHash}`;
-            
             try {
-                const response = await axios.post(url, null, {
-                    headers: { 'Content-Type': 'application/json' }
+                // Password is sent in the request body (never in the URL/query string).
+                await api.post("/api/Customer/procedure-sign-up", {
+                    customerFirstName,
+                    customerLastName,
+                    customerEmail,
+                    passwordHash,
                 });
-                alert("Customer signed up successfully!");  
+                alert("Customer signed up successfully!");
             } catch (error: any) {
                 console.error("Sign up error:", error);
                 const errorMessage = error.response?.data?.message || "An error occurred.";
-                alert(errorMessage);  
+                alert(errorMessage);
             }
         };
-        
+
         const handleLogin = async () => {
             try {
-                const response = await axios.post("https://localhost:7192/api/Auth/login", {
+                const response = await api.post("/api/Auth/login", {
                     email: customerEmail,
                     password: passwordHash,
                 });
-        
-                const { token } = response.data;
+
+                const { token, userId: loginUserId, role } = response.data;
                 if (!token) {
                     setMessage("No token received from the server.");
                     return;
                 }
 
-                // Decode the token to get user data
-                const decodedToken: any = jwt_decode(token);  // Correct usage of jwt_decode
-                const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-                if (!userId) {
-                    setMessage("User ID not found in token.");
-                    return;
-                }
-        
+                // The backend now returns the user id and role directly, so we no
+                // longer need to decode the token or hard-code an admin id.
                 localStorage.setItem("authToken", token);
-                localStorage.setItem("userId", userId);
+                localStorage.setItem("userId", String(loginUserId));
+                localStorage.setItem("role", role);
 
-                // Check if the user is an admin (assuming admin ID is 10)
-                if (userId === 10) {
-                    setAdmin(true);
-                    console.log(admin);
-                }
-                else{
-                    setAdmin(false);
-                    console.log(admin);
-                }
+                setAdmin(role === "Admin");
 
                 window.location.reload();
-                
-                setUserId(userId);
+
+                setUserId(String(loginUserId));
                 setIsLoggedInLocal(true);
                 setIsLoggedIn(true);
                 setMessage("Logged in successfully!");
@@ -92,19 +80,12 @@ import jwt_decode from 'jwt-decode';
         const handleLogout = () => {
             localStorage.removeItem("authToken");
             localStorage.removeItem("userId");
+            localStorage.removeItem("role");
             setIsLoggedInLocal(false);
             setIsLoggedIn(false);
             setUserId(null); // Clear the userId from the state
             setMessage("Logged out successfully.");
         };
-
-        axios.interceptors.request.use((config) => {
-            const token = localStorage.getItem("authToken");
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        });
 
         return (
             <div className="signUpContainer">

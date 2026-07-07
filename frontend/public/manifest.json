@@ -1,0 +1,9 @@
+{
+  "short_name": "Shopping Site",
+  "name": "Shopping Site — Full-Stack E-Commerce",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#111827",
+  "background_color": "#ffffff"
+}

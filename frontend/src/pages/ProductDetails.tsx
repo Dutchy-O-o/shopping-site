@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/client";
 import { useParams } from "react-router-dom";
 import '../Styles/ProductsPage.css';
 
@@ -45,8 +45,8 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `https://localhost:7192/api/Product/get-product-by-id?Id=${productId}`
+        const response = await api.get(
+          `/api/Product/get-product-by-id?Id=${productId}`
         );
         setProduct(response.data);
         setLoading(false);
@@ -58,8 +58,8 @@ const ProductDetails = () => {
 
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(
-          `https://localhost:7192/api/Review/select-all-reviews_join_customers-via-function`
+        const response = await api.get(
+          `/api/Review/select-all-reviews_join_customers-via-function`
         );
         const filteredReviews = response.data.filter((review: Review) => review.productId === Number(productId));
         setReviews(filteredReviews);
@@ -76,6 +76,7 @@ const ProductDetails = () => {
   
   const storedUserId = localStorage.getItem("userId");
   const customerId = storedUserId ? parseInt(storedUserId) : undefined;
+  const isAdmin = localStorage.getItem("role") === "Admin";
   const handleAddReview = async () => {
     if (!customerId) {
       alert("You must be logged in to submit a review.");
@@ -83,8 +84,8 @@ const ProductDetails = () => {
     }
   
     try {
-      await axios.post(
-        `https://localhost:7192/api/Review/procedure-add-review?ProductId=${productId}&CustomerId=${customerId}&Rating=${newReview.rating}&Comment=${newReview.comment}`
+      await api.post(
+        `/api/Review/procedure-add-review?ProductId=${productId}&CustomerId=${customerId}&Rating=${newReview.rating}&Comment=${newReview.comment}`
       );
       alert("Review added successfully!");
       setNewReview({ rating: 5, comment: "" });
@@ -127,8 +128,8 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchShoppingCartId = async () => {
       try {
-        const response = await axios.get(
-          `https://localhost:7192/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`
+        const response = await api.get(
+          `/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`
         );
         const shoppingCartId = response.data[0]?.shoppingCartId;
         if (shoppingCartId) {
@@ -153,8 +154,8 @@ const ProductDetails = () => {
     }
   
     try {
-      await axios.post(
-        `https://localhost:7192/api/ShoppingCartItem/procedure-add-shopping-cart-item?ShoppingCartId=${shoppingCartId}&ProductId=${productId}&Quantity=1`
+      await api.post(
+        `/api/ShoppingCartItem/procedure-add-shopping-cart-item?ShoppingCartId=${shoppingCartId}&ProductId=${productId}&Quantity=1`
       );
       alert("Product added to cart!");
     } catch (error) {
@@ -188,8 +189,8 @@ const ProductDetails = () => {
   const handleSaveChanges = async () => {
     if (!editedProduct) return;
     try {
-      await axios.get(
-        `https://localhost:7192/api/Product/update-product-via-function?ProductId=${productId}&ProductName=${editedProduct.productName}&Description=${editedProduct.description}&Price=${editedProduct.price}&StockQuantity=${editedProduct.stockQuantity}&Gender=${editedProduct.gender}`
+      await api.put(
+        `/api/Product/update-product-via-function?ProductId=${productId}&ProductName=${editedProduct.productName}&Description=${editedProduct.description}&Price=${editedProduct.price}&StockQuantity=${editedProduct.stockQuantity}&Gender=${editedProduct.gender}`
       );
       alert("Product updated successfully!");
       setIsEditing(false);
@@ -230,7 +231,7 @@ const ProductDetails = () => {
         <div className="product-action">
           <button className="add-to-cart" onClick={handleAddToCart}>Add to Cart</button>
         
-          {customerId === 10 && !isEditing && (
+          {isAdmin && !isEditing && (
     <button 
         className="edit-product" 
         onClick={handleEditClick} 

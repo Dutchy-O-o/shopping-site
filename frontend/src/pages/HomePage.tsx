@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import axios from "axios";
+import api from "../api/client";
 import { Link } from 'react-router-dom';
 import '../Styles/Home.css';
 
@@ -43,9 +43,7 @@ export function HomePage() {
       const genderQuery = selectedGender ? `&gender=${selectedGender}` : '';
       const orderQuery = order ? `&order=${order}` : ''; 
 
-      console.log('API URL:', `https://localhost:7192/api/Product/UltimateSelect?${genderQuery}${categoryQuery}${searchQuery}${orderQuery}`);
-
-      const response = await axios.get<Product[]>(`https://localhost:7192/api/Product/UltimateSelect?${genderQuery}${categoryQuery}${searchQuery}${orderQuery}`);
+      const response = await api.get<Product[]>(`/api/Product/UltimateSelect?${genderQuery}${categoryQuery}${searchQuery}${orderQuery}`);
       setProductList(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

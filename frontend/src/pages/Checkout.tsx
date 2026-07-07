@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/client';
 import '../Styles/Checkout.css';
 
 const Checkout: React.FC = () => {
@@ -34,8 +35,8 @@ const Checkout: React.FC = () => {
 
       const customerId = parseInt(storedUserId);
       try {
-        const response = await fetch(`https://localhost:7192/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`);
-        const data = await response.json();
+        const response = await api.get(`/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`);
+        const data = response.data;
         if (data.length > 0) {
           setShoppingCartId(data[0].shoppingCartId);
         } else {
@@ -95,24 +96,15 @@ const Checkout: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7192/api/ShoppingCartItem/procedure-remove-from-cart-add-to-new-order?input_ShoppingCartId=${shoppingCartId}&input_PaymentMethod=${paymentMethod}&input_CardNumber=${cardNumber.replace(/\s+/g, '')}`,
-        {
-          method: 'POST',
-        }
+      await api.post(
+        `/api/ShoppingCartItem/procedure-remove-from-cart-add-to-new-order?input_ShoppingCartId=${shoppingCartId}&input_PaymentMethod=${paymentMethod}&input_CardNumber=${cardNumber.replace(/\s+/g, '')}`
       );
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert('Payment processed and order created!');
-        handleClear();
-        navigate('/');  // Navigate to HomePage
-      } else {
-        setError(data.message || 'Error processing payment');
-      }
-    } catch (error) {
-      setError('Error processing payment');
+      alert('Payment processed and order created!');
+      handleClear();
+      navigate('/');  // Navigate to HomePage
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Error processing payment');
     }
   };
 

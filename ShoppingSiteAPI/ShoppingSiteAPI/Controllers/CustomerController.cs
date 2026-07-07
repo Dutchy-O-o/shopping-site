@@ -119,10 +119,17 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost("procedure-sign-up")]
-    public async Task<IActionResult> ProcedureSignUp(string CustomerFirstName, string CustomerLastName, string CustomerEmail, string PasswordHash)
+    public async Task<IActionResult> ProcedureSignUp([FromBody] SignUpRequest request)
     {
         try
         {
+            // Bind the request body to local variables so the password never
+            // travels in the URL / query string (where it would be logged).
+            var CustomerFirstName = request.CustomerFirstName ?? string.Empty;
+            var CustomerLastName = request.CustomerLastName ?? string.Empty;
+            var CustomerEmail = request.CustomerEmail ?? string.Empty;
+            var PasswordHash = request.PasswordHash ?? string.Empty;
+
             var namePattern = @"^[a-zA-Z\s]+$";
 
             if (CustomerFirstName.Length > 40 || CustomerLastName.Length > 40)
@@ -265,6 +272,14 @@ public class CustomerController : ControllerBase
             return BadRequest(new { Message = "An error occurred.", Details = ex.Message });
         }
     }
+}
+
+public class SignUpRequest
+{
+    public string? CustomerFirstName { get; set; }
+    public string? CustomerLastName { get; set; }
+    public string? CustomerEmail { get; set; }
+    public string? PasswordHash { get; set; }
 }
 
 

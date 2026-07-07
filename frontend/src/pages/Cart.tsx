@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
+import api from '../api/client';
 import '../Styles/Cart.css';
 
 interface CartItem {
@@ -22,31 +23,26 @@ const Cart = () => {
   const customerId = storedUserId ? parseInt(storedUserId) : undefined;
 
   useEffect(() => {
-    if (customerId) {
-      // Fetch shoppingCartId using customerId
-      fetch(`https://localhost:7192/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`)
-        .then(response => response.json())
-        .then((data) => {
-          const shoppingCartId = data[0]?.shoppingCartId;
-          if (shoppingCartId) {
-            // Fetch cart items using shoppingCartId
-            fetch(`https://localhost:7192/api/ShoppingCart/select-shopping_cart_items-using-shopping_cart_id-via-function?ShoppingCartId=${shoppingCartId}`)
-              .then(response => response.json())
-              .then((items: CartItem[]) => {
-                setCartItems(items);
-                setLoading(false);
-              })
-              .catch(err => {
-                setError('Error fetching cart items.');
-                setLoading(false);
-              });
-          }
-        })
-        .catch(err => {
-          setError('Error fetching shopping cart.');
-          setLoading(false);
-        });
-    }
+    if (!customerId) return;
+
+    const loadCart = async () => {
+      try {
+        // Fetch shoppingCartId using customerId
+        const cartResponse = await api.get(`/api/ShoppingCart/find-shopping_cart_id-using-customer_id-via-function?CustomerId=${customerId}`);
+        const shoppingCartId = cartResponse.data[0]?.shoppingCartId;
+        if (shoppingCartId) {
+          // Fetch cart items using shoppingCartId
+          const itemsResponse = await api.get<CartItem[]>(`/api/ShoppingCart/select-shopping_cart_items-using-shopping_cart_id-via-function?ShoppingCartId=${shoppingCartId}`);
+          setCartItems(itemsResponse.data);
+        }
+      } catch (err) {
+        setError('Error fetching shopping cart.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCart();
   }, [customerId]);
 
   // Calculate total cost
