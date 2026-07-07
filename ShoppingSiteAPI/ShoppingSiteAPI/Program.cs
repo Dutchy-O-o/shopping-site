@@ -102,8 +102,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Only force HTTPS in production; in development we serve HTTP too so the
+    // frontend can call the API without a trusted dev certificate.
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors(CorsPolicy);

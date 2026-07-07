@@ -1,174 +1,136 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  overflow-x: hidden; /* Sağ sola taşmayı önler */
-  font-family: 'Roboto', sans-serif;
-}
+/* ===================================================================
+   Home / Shop page — hero, filters, product grid
+   =================================================================== */
+
 .homepage {
-  max-width: 1200px; /* Sayfanın genişliğini sınırladık */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.homepage h1 {
-  text-align: center;
-  color: #00796b;
-  font-size: 32px;
-  margin-bottom: 30px;
-  font-weight: 600;
+  padding: 2rem 1.25rem 4rem;
 }
 
-/* Arama çubuğu tasarımı */
+.homepage > h1 {
+  text-align: center;
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  margin: 1rem 0 2rem;
+  background: linear-gradient(120deg, var(--primary), #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- Filter toolbar ------------------------------------------------ */
+.gender-filter,
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.gender-filter button,
+.category-button {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.gender-filter button:hover,
+.category-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.gender-filter button.active,
+.category-button.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* --- Search + sort ------------------------------------------------- */
+.order-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.order-filter select {
+  max-width: 220px;
+  border-radius: 999px;
+}
+
 .search-bar {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
+  gap: 0.6rem;
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
 }
 
 .search-bar input {
-  padding: 10px 15px;
-  font-size: 16px;
-  border-radius: 30px;
-  border: 1px solid #ddd;
-  width: 60%;
-  margin-right: 10px;
-  transition: all 0.3s ease;
-}
-
-.search-bar input:focus {
-  outline: none;
-  border-color: #00796b;
-  box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
+  border-radius: 999px;
+  padding-left: 1.1rem;
 }
 
 .search-bar button {
-  padding: 10px 20px;
-  background-color: #00796b;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  border-radius: 999px;
+  padding-inline: 1.6rem;
+  flex-shrink: 0;
 }
 
-.search-bar button:hover {
-  background-color: #004d40;
-}
-
-/* Kategori butonları */
-.category-filter {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.category-button {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  color: #333;
-  padding: 10px 20px;
-  margin: 0 10px;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.category-button:hover {
-  background-color: #00796b;
-  color: white;
-  transform: translateY(-3px);
-}
-
-.category-button.active {
-  background-color: #00796b;
-  color: white;
-}
-
-/* Ürünler için liste düzeni */
+/* --- Product grid -------------------------------------------------- */
 .product-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 40px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
 }
 
-.product-card {
+.product-list .product-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-decoration: none;
-  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.product-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.product-list .product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: #d7dbec;
 }
 
-.product-image {
+.product-list .product-card img {
   width: 100%;
-  height: 200px;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  background: var(--bg-accent);
 }
 
-.product-info h3 {
-  font-size: 18px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.product-price {
-  font-size: 16px;
-  color: #00796b;
-  font-weight: bold;
-}
-
-/* Cinsiyet filtresi */
-.gender-filter {
+.product-list .product-info {
+  padding: 1rem 1.1rem 1.25rem;
   display: flex;
-  justify-content: center;
-  margin-bottom: 30px; /* Kategorilerden önce biraz mesafe */
-  padding: 10px;
-  background-color: #00796b; /* Modern bir yeşil renk */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
-.gender-filter button {
-  background-color: #fff;
-  color: #00796b;
-  padding: 12px 25px;
-  margin: 0 10px;
-  border: 2px solid #00796b;
-  border-radius: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.product-list .product-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.gender-filter button:hover {
-  background-color: #00796b;
-  color: white;
+.product-list .product-price {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary);
 }
-
-.gender-filter button.active {
-  background-color: #004d40;
-  color: white;
-}
-  

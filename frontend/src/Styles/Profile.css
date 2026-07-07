@@ -1,184 +1,142 @@
+/* ===================================================================
+   Profile page — info card, edit form, orders, reviews
+   =================================================================== */
+
 .Profile {
-  margin: 0 auto;
-  padding: 40px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  text-align: center;
+  max-width: 760px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem 3rem;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
-  min-height: 80vh;
-  justify-content: space-between;
 }
 
 .Profile__title {
-  color: #00796b;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-.Profile__logout-button {
-  padding: 12px 20px;
-  background-color: #00796b;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  margin-top: auto;
-}
-
-/* Product Price Styling */
-.product-price {
-  color: #00796b; /* Using your preferred green color */
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.Profile__logout-button:hover {
-  background-color: #004d40;
+.Profile__card,
+.Profile__edit-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  max-width: 560px;
+  margin: 0 auto 1.5rem;
+  width: 100%;
 }
 
 .Profile__card {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 20px auto;
   text-align: center;
-  padding: 40px 30px; /* Daha fazla padding ekleyerek dolgunluk sağla */
-  border: 2px solid #00796b; /* Çerçeve ekleyerek dikkat çekici hale getir */
-}
-
-.Profile__card h3 {
-  color: #00796b;
-  font-size: 1.8rem;
-  margin-bottom: 15px;
 }
 
 .Profile__card p {
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin: 0.4rem 0;
+}
+
+.Profile__card p strong {
+  color: var(--text);
+}
+
+.Profile__card button {
+  margin-top: 1.25rem;
+}
+
+.Profile__edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  text-align: left;
+}
+
+.Profile__edit-form label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .Profile__error {
-  color: red;
-  font-size: 1rem;
-  margin-top: 10px;
+  color: var(--danger);
+  text-align: center;
 }
 
-.delete-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-top: 10px;
+.Profile__success {
+  color: var(--success);
+  text-align: center;
 }
 
-.delete-button:hover {
-  background-color: #c0392b;
-}
-
-.review-details {
-  padding: 10px;
-  background-color: #f7f7f7;
-  margin-top: 10px;
-}
-
-.order-history {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+/* --- Orders & reviews toggles ------------------------------------- */
+.order-history,
+.product-reviews {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 1rem;
+  text-align: center;
 }
 
 .order-group {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  padding: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin: 1rem 0;
+  box-shadow: var(--shadow-sm);
+  text-align: left;
 }
 
 .order-header {
-  display: flex;
-  flex-direction: column; /* Vertical alignment for header elements */
-  align-items: center; /* Center everything in the header */
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .order-header .total-price {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center; /* Ensures it's centered */
+  font-weight: 700;
+  color: var(--primary);
 }
 
 .order-items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.6rem;
 }
 
 .order-item-row {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 5px;
-  background: #f9f9f9;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fafbff;
 }
 
 .order-item-row p {
   margin: 0;
-  flex: 1;
-  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-.Profile__edit-form {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  border: 2px solid #00796b;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  margin: 0 auto;
+/* --- Buttons ------------------------------------------------------- */
+.delete-button {
+  background: var(--danger);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
 }
 
-.Profile__edit-form label {
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: bold;
+.delete-button:hover {
+  background: var(--danger-hover);
 }
 
-.Profile__edit-form input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 1rem;
-  width: 100%;
-  margin-top: 5px;
-}
-
-.Profile__edit-form button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  background-color: #00796b;
-  color: white;
-  transition: background-color 0.3s;
-}
-
-.Profile__edit-form button:hover {
-  background-color: #004d40;
+.Profile__logout-button {
+  align-self: center;
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
 }

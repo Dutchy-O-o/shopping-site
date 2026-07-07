@@ -1,95 +1,90 @@
+/* ===================================================================
+   Auth page — Sign up / Login
+   =================================================================== */
 
-body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-  }
-  
+.signUpContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: radial-gradient(1200px 600px at 50% -10%, #e7e9ff 0%, var(--bg) 55%);
+}
 
-  .signUpContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column-reverse; 
-    height: 100vh;
-    margin-top: 40px; 
-  }
-  
-  .form-tabs {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px; 
-    gap: 20px;
-  }
-  
-  .form-tabs button {
-    background-color: #00796b;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .form-tabs button:hover {
-    background-color: #004d40;
-  }
-  
-  .form-tabs .active-tab {
-    background-color: #004d40;
-  }
-  
-  /* Form stilleri */
-  .signUpForm {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .signUpForm h1 {
-    color: #333; 
-    margin-bottom: 20px;
-  }
-  
-  .signUpForm input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  
-  .signUpForm input:focus {
-    border-color: #00796b;
-    outline: none;
-  }
-  
-  .signUpForm button {
-    width: 100%;
-    padding: 12px;
-    background-color: #00796b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .signUpForm button:hover {
-    background-color: #004d40;
-  }
-  
-  .signUpForm p {
-    text-align: center;
-    color: #333;
-    margin-top: 15px;
-  }
-  
-  
+/* Segmented tab switch */
+.form-tabs {
+  display: inline-flex;
+  padding: 0.3rem;
+  gap: 0.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-tabs button {
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 0.55rem 1.5rem;
+  box-shadow: none;
+}
+
+.form-tabs button:hover {
+  background: var(--primary-soft);
+  color: var(--primary);
+  transform: none;
+}
+
+.form-tabs .active-tab {
+  background: var(--primary);
+  color: #fff;
+}
+
+.form-tabs .active-tab:hover {
+  background: var(--primary-hover);
+  color: #fff;
+}
+
+/* Card */
+.signUpForm,
+.loggedInView {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  padding: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.signUpForm h1,
+.loggedInView h1 {
+  margin-bottom: 1.25rem;
+  font-size: 1.6rem;
+}
+
+.signUpForm input {
+  margin: 0.5rem 0;
+}
+
+.signUpForm button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+
+.signUpForm p,
+.loggedInView p {
+  color: var(--text-muted);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.loggedInView button {
+  margin-top: 1rem;
+}
