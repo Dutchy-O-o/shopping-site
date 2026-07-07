@@ -1,62 +1,86 @@
-# 🛍️ Shopping Site — Full-Stack E-Commerce Application
+<div align="center">
 
-A full-stack e-commerce web application built as a **Database Management Systems** course
-project. It combines a **PostgreSQL** database driven by hand-written SQL **functions,
-stored procedures and views** with a modern **ASP.NET Core Web API** backend and a
-**React + TypeScript** single-page frontend.
+# 🛍️ Shopping Site
 
-> The focus of the project is on the **database layer** — most read/write operations go
-> through PostgreSQL functions and procedures rather than plain ORM calls, demonstrating
-> stored-procedure design, views, joins and parameterised queries.
+### A full-stack e-commerce platform — ASP.NET Core · React · PostgreSQL
+
+Product catalog, cart & checkout, reviews and an admin panel, powered by a
+database layer built on PostgreSQL **functions, stored procedures and views**.
+
+![.NET](https://img.shields.io/badge/.NET%208-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
+![React](https://img.shields.io/badge/React%2018-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+
+</div>
 
 ---
+
+## 📖 Overview
+
+Shopping Site is a full-stack e-commerce web application built as a **Database
+Management Systems** course project. The emphasis is on the **database layer** —
+most read and write operations are executed through PostgreSQL functions and
+stored procedures rather than plain ORM calls, showcasing stored-procedure
+design, views, joins and parameterised queries.
+
+It ships with a secure **ASP.NET Core 8 Web API** backend and a modern
+**React + TypeScript** single-page frontend.
 
 ## ✨ Features
 
-- 🔐 **JWT authentication** with BCrypt password hashing and role-based authorization (Admin / Customer)
-- 🛒 Product catalogue with filtering by **gender + category**, full-text **search** and **sorting**
-- 🧺 Shopping cart and checkout flow backed by SQL views and procedures
-- 👤 Customer profile management (edit / delete) via stored procedures
-- ⭐ Product reviews joined with customer data through SQL views
-- 🛠️ **Admin panel**: add / update / delete products, view and manage customers, mute customers
-- 📖 Interactive **Swagger** API documentation with JWT support
-
----
+- 🔐 **JWT authentication** with BCrypt password hashing
+- 🛡️ **Role-based authorization** (Admin / Customer) enforced with `[Authorize]`
+- 🛒 Product catalog with **gender + category filtering**, **search** and **sorting**
+- 🧺 **Shopping cart & checkout** backed by SQL views and procedures
+- 👤 Customer **profile management** (edit / delete) via stored procedures
+- ⭐ **Product reviews** joined with customer data through SQL views
+- 🛠️ **Admin panel** — manage products, customers and muted users
+- 📖 Interactive **Swagger** API docs with JWT support
 
 ## 🧱 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | React 18, TypeScript, React Router 6, Axios |
-| **Backend** | ASP.NET Core 8 Web API, Entity Framework Core 8 |
-| **Database** | PostgreSQL (functions, procedures, views, EF Core migrations) |
-| **Auth** | JWT Bearer tokens, BCrypt.Net |
-| **Docs** | Swagger / Swashbuckle |
+<table>
+  <tr><td><b>Frontend</b></td><td>React 18 · TypeScript · React Router 6 · Axios</td></tr>
+  <tr><td><b>Backend</b></td><td>ASP.NET Core 8 Web API · Entity Framework Core 8</td></tr>
+  <tr><td><b>Database</b></td><td>PostgreSQL — functions, procedures, views, EF Core migrations</td></tr>
+  <tr><td><b>Auth</b></td><td>JWT Bearer tokens · BCrypt.Net</td></tr>
+  <tr><td><b>API Docs</b></td><td>Swagger / Swashbuckle</td></tr>
+</table>
 
----
+## 🖼️ Screenshots
+
+> _Add screenshots of the Home, Shop, Cart, Checkout and Admin pages here._
+
+<div align="center">
+
+| Home | Product & Reviews | Admin Panel |
+|:----:|:-----------------:|:-----------:|
+| _tbd_ | _tbd_ | _tbd_ |
+
+</div>
 
 ## 🗂️ Project Structure
 
 ```
-DBMS/
+shopping-site/
 ├── ShoppingSiteAPI/ShoppingSiteAPI/   # ASP.NET Core Web API
 │   ├── Controllers/                   # REST endpoints
 │   ├── Database/                      # EF Core entities + AppDbContext
-│   ├── DTOs/                          # Data-transfer objects (function/view results)
+│   ├── DTOs/                          # DTOs for function/view results
 │   ├── Middleware/                    # Global exception handling
-│   ├── Migrations/                    # EF Core migrations (schema, functions, views, procedures)
-│   ├── Program.cs                     # App startup, DI, auth, CORS, Swagger
-│   └── appsettings.json               # Configuration (JWT, connection string, CORS)
+│   ├── Migrations/                    # Schema, functions, views, procedures
+│   └── Program.cs                     # Startup: DI, auth, CORS, Swagger
 │
 └── frontend/                          # React + TypeScript SPA
     └── src/
-        ├── Components/                # App shell, Navbar, contexts
-        ├── pages/                     # Home, Shop, Cart, Checkout, Profile, Admin, ...
-        ├── api/                       # Central Axios client (base URL + auth interceptor)
+        ├── api/                       # Central Axios client (base URL + auth)
+        ├── Components/                # App shell, Navbar
+        ├── pages/                     # Home, Shop, Cart, Checkout, Profile, Admin…
         └── Styles/                    # CSS
 ```
-
----
 
 ## 🚀 Getting Started
 
@@ -66,27 +90,23 @@ DBMS/
 - [Node.js 18+](https://nodejs.org/)
 - [PostgreSQL 14+](https://www.postgresql.org/download/)
 
-### 1. Database
+### 1️⃣ Database
 
-Create a PostgreSQL database (default name `supermarketDb`). The schema, SQL functions,
-procedures and views are all created automatically by the EF Core migrations.
+Create a PostgreSQL database named `supermarketDb`. The schema, SQL functions,
+procedures and views are created automatically by the EF Core migrations.
 
-### 2. Backend
+### 2️⃣ Backend
 
 ```bash
 cd ShoppingSiteAPI/ShoppingSiteAPI
-
-# Configure the connection string & JWT key (see Configuration below)
-# then apply migrations and run:
-dotnet tool install --global dotnet-ef        # first time only
-dotnet ef database update
+dotnet tool install --global dotnet-ef   # first time only
+dotnet ef database update                # apply migrations
 dotnet run
 ```
 
-The API starts at `https://localhost:7192` and Swagger UI is available at
-`https://localhost:7192/swagger`.
+API → `https://localhost:7192` · Swagger → `https://localhost:7192/swagger`
 
-### 3. Frontend
+### 3️⃣ Frontend
 
 ```bash
 cd frontend
@@ -94,14 +114,12 @@ npm install
 npm start
 ```
 
-The app opens at `http://localhost:3000`.
-
----
+App → `http://localhost:3000`
 
 ## ⚙️ Configuration
 
-Backend settings live in `appsettings.json` (non-secret defaults) and
-`appsettings.Development.json` (local secrets — **git-ignored**):
+Backend config lives in `appsettings.json` (non-secret defaults) and
+`appsettings.Development.json` (local secrets, **git-ignored**):
 
 ```jsonc
 {
@@ -115,57 +133,41 @@ Backend settings live in `appsettings.json` (non-secret defaults) and
     "ExpiryHours": 2
   },
   "Cors": { "AllowedOrigins": [ "http://localhost:3000" ] },
-  "AdminEmails": [ "admin@shoppingsite.com" ]   // accounts logging in with these emails get the Admin role
+  "AdminEmails": [ "admin@shoppingsite.com" ]
 }
 ```
 
-> **Production:** never commit real secrets. Provide `Jwt:Key` and the connection string
-> through environment variables or `dotnet user-secrets` instead.
-
-Frontend settings live in `frontend/.env`:
+Frontend config lives in `frontend/.env`:
 
 ```
 REACT_APP_API_URL=https://localhost:7192
 ```
 
----
+> **Production:** never commit real secrets — provide `Jwt:Key` and the connection
+> string through environment variables or `dotnet user-secrets`.
 
-## 🔐 Security Notes
+## 🔐 Security
 
-- Passwords are hashed with **BCrypt** — never stored in plain text.
-- Authentication uses **JWT Bearer** tokens signed with a configurable secret.
-- Endpoints are protected with `[Authorize]` / `[Authorize(Roles = "Admin")]`.
-- The JWT signing key, DB credentials and CORS origins are read from configuration, not hard-coded.
-- Unhandled exceptions are caught by middleware and returned as safe `ProblemDetails`
-  (no stack traces leak to clients in Production).
-
----
+- Passwords hashed with **BCrypt** — never stored in plain text
+- Stateless **JWT Bearer** authentication signed with a configurable secret
+- Endpoints protected with `[Authorize]` / `[Authorize(Roles = "Admin")]`
+- Secrets, DB credentials and CORS origins read from configuration, not hard-coded
+- Unhandled errors caught by middleware and returned as safe **ProblemDetails**
+  (no stack traces leak to clients)
 
 ## 🗄️ Database Highlights (DBMS focus)
 
 The project deliberately pushes logic into the database:
 
-- **Functions** — e.g. `select_all_products()`, `select_products_by_gender_and_categories()`,
-  `ultimate_select()` (combined filter + search + sort).
-- **Stored procedures** — e.g. `insert_customer()`, `edit_profile()`, `update_product()`,
-  `delete_customer()`.
-- **Views** — for joined read models (cart items × products, orders × ordered items × products,
-  reviews × customers, muted customers × customers).
-- **Migrations** — the full schema, foreign keys with cascade deletes, functions, procedures
-  and views are versioned as EF Core migrations.
-
----
-
-## 📸 Screenshots
-
-_Add screenshots of the Home, Shop, Cart, Checkout and Admin pages here._
-
-| Home | Shop | Admin |
-|------|------|-------|
-| _tbd_ | _tbd_ | _tbd_ |
-
----
+- **Functions** — `select_all_products()`, `select_products_by_gender_and_categories()`,
+  `ultimate_select()` (combined filter + search + sort)
+- **Stored procedures** — `insert_customer()`, `edit_profile()`, `update_product()`,
+  `delete_customer()`
+- **Views** — joined read models (cart × products, orders × items × products,
+  reviews × customers, muted customers × customers)
+- **Migrations** — schema, foreign keys with cascade deletes, functions, procedures
+  and views versioned as EF Core migrations
 
 ## 📝 License
 
-This project was created for educational purposes as part of a university DBMS course.
+Created for educational purposes as part of a university DBMS course.
